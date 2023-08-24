@@ -26,7 +26,9 @@ let maxBoundary = 100;
 export default function GameScreen(props) {
     //? Prevent max size stack reached to set min and max as fixed values
     const generateNumber = generateRandomNumber(1, 100, props.userNumber);
+
     const [getGuess, setGuess] = useState(generateNumber);
+    
     const [guessRounds, setGuessRounds] = useState([generateNumber]);
 
     useEffect(() => {
