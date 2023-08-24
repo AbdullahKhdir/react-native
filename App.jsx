@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { View } from 'react-native';
 import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
@@ -6,7 +7,11 @@ import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import Colors from './constants/Colors';
 import GameOverScreen from './screens/GameOverScreen';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
@@ -16,13 +21,21 @@ export default function App() {
   const [isFontLoading] = useFonts(
     {
       'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-      'open-sans-bold': require('./assets/fonts/OpenSans-Regular.ttf')
+      'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
     }
   );
 
+  const onLayoutRootView = useCallback(async () => {
+    if (isFontLoading) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isFontLoading]);
+
   if (!isFontLoading) {
-    return <AppLoading />
+    return null;
   }
+
+  SplashScreen.hideAsync();
 
   function startNewGameHandler () {
     setUserNumber(null);
@@ -57,19 +70,24 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      colors={[Colors.primary700, Colors.accent500]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        source={require('./assets/images/background.png')}
-        resizeMode="cover"
-        style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
-      >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+    <>
+      <StatusBar style='light'/>
+      <View style={styles.root} onLayout={onLayoutRootView}>
+        <LinearGradient
+          colors={[Colors.primary700, Colors.accent500]}
+          style={styles.rootScreen}
+        >
+          <ImageBackground
+            source={require('./assets/images/background.png')}
+            resizeMode="cover"
+            style={styles.rootScreen}
+            imageStyle={styles.backgroundImage}
+          >
+            <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+          </ImageBackground>
+        </LinearGradient>
+      </View>
+    </>
   );
 }
 
@@ -79,5 +97,9 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     opacity: 0.15
+  },
+  root: {
+    flex: 1,
+    backgroundColor: 'transparent'
   }
 });

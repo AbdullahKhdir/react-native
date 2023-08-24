@@ -1,4 +1,4 @@
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, Platform } from 'react-native';
 import Colors from '../../constants/Colors';
 
 export default function Title({ children }) {
@@ -7,16 +7,18 @@ export default function Title({ children }) {
     );
 }
 
+
 const styles = StyleSheet.create({
     title: {
         fontFamily: 'open-sans-bold',
         fontSize: 24,
         color: Colors.white,
         textAlign: 'center',
-        borderWidth: 2,
+        // borderWidth: Platform.OS === 'android' ? 2 : 0,
+        // borderWidth: Platform.select({ios: 0,android: 2}),
+        borderWidth: 0,
         borderColor: Colors.white,
         padding: 12,
-        // marginTop: 40,    
-        // marginHorizontal: 40
+        maxWidth: '80%'
     }
 });
