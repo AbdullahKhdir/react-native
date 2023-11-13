@@ -4,23 +4,31 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack/'
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import IconButton from './components/ui/IconButton';
+import { Colors } from './constants/colors';
 
 const Stack            = createNativeStackNavigator();
-const screenOptions    = {};
+const screenOptions    = {
+  headerStyle: { backgroundColor: Colors.primary500 },
+  headerTintColor: Colors.gray700,
+  contentStyle: { backgroundColor: Colors.gray700 },
+};
 const allPlacesOptions = ({ navigation }) => ({
   headerRight: ({tintColor}) => {
     return (
-      <IconButton 
-        iconName='add' 
-        size={24} 
-        color={tintColor} 
+      <IconButton
+        iconName='add'
+        size={24}
+        color={tintColor}
         onPress={() => navigation.navigate('AddPlace')}
       />
-    );
-  }
+    )
+  },
+  title: 'Your favorite places'
 });
 
-const addPlacesOptions = {};
+const addPlacesOptions = {
+  title: 'Add new place'
+};
 
 export default function App() {
   return (
