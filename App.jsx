@@ -5,6 +5,7 @@ import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import IconButton from './components/ui/IconButton';
 import { Colors } from './constants/colors';
+import Map from './screens/Map';
 
 const Stack            = createNativeStackNavigator();
 const screenOptions    = {
@@ -30,14 +31,27 @@ const addPlacesOptions = {
   title: 'Add new place'
 };
 
+const mapOptions = {
+  title: '',
+  headerTransparent: true,
+  headerStyle: {
+    backgroundColor: 'transparent',
+  },
+  headerTintColor: Colors.primary500,
+  headerTitleStyle: {
+    fontWeight: 'bold'
+  }
+};
+
 export default function App() {
   return (
     <>
       <StatusBar style='dark'/>
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
-          <Stack.Screen name='AllPlaces' component={AllPlaces} options={allPlacesOptions}/>
-          <Stack.Screen name='AddPlace' component={AddPlace}  options={addPlacesOptions}/>
+          <Stack.Screen name='AllPlaces'  component={AllPlaces} options={allPlacesOptions}/>
+          <Stack.Screen name='AddPlace'   component={AddPlace}  options={addPlacesOptions}/>
+          <Stack.Screen name='Map'        component={Map}       options={mapOptions}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

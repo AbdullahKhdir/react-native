@@ -39,7 +39,7 @@ const styles = StyleSheet.create(
             alignItems: 'center'
         },
         fallbackText: {
-            fontSize: 16,
+            fontSize: 14,
             color: Colors.primary200
         }
     }
