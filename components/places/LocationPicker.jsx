@@ -1,13 +1,14 @@
-import { Alert, StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from "expo-location";
-import OutlinedButton from "../ui/OutlinedButton";
-import { Colors } from "../../constants/colors";
-import { useEffect, useRef, useState } from "react";
-import MapView, { AnimatedRegion, MarkerAnimated, PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { PermissionStatus, getCurrentPositionAsync, useForegroundPermissions } from "expo-location";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Colors } from "../../constants/colors";
+import { getAddressFromCoordinates } from "../../util/location";
 import { renderMapAfterTime } from "../../util/time";
+import OutlinedButton from "../ui/OutlinedButton";
 
-export default LocationPicker = () => {
+export default LocationPicker = ({onPickLocation}) => {
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
     const [getLocation, setLocation]                         = useState({});
     const [loading, setLoading]                              = useState(false);
@@ -96,7 +97,17 @@ export default LocationPicker = () => {
       setLoading(false);
     }, [mapRef, getLocation, navigation, route]);
 
-    // todo
+
+    useEffect(() => {
+      async function handleLocation() {
+        if (Object.keys(getLocation).length > 0) {
+          onPickLocation({...getLocation, address: await getAddressFromCoordinates(getLocation.latitude, getLocation.longitude)});
+        }
+      }
+
+      handleLocation();
+    }, [getLocation, onPickLocation]);
+
     let map = (
       !loading ? 
         <Text>No location defined yet</Text>
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     location_container: {
-        paddingBottom: 100
+        paddingBottom: 10
     },
     map: {
       width: '100%', 

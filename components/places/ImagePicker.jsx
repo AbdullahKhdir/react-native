@@ -1,10 +1,10 @@
-import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
-import { launchCameraAsync, useCameraPermissions, PermissionStatus } from "expo-image-picker";
+import { PermissionStatus, launchCameraAsync, useCameraPermissions } from "expo-image-picker";
 import { useState } from "react";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
 
-export default ImagePicker = () => {
+export default ImagePicker = ({onTakeImage}) => {
     const [pickedImage, setPickedImage] = useState();
     
     //? ios camera permission "requestPermission"
@@ -43,6 +43,7 @@ export default ImagePicker = () => {
             allowsMultipleSelection: false
         }).then((image) => {
             setPickedImage(image === null ? {} : image.assets[0]);
+            onTakeImage(image === null ? {} : image.assets[0]);
         }).catch(() => {/** handle canceled image capturing */});
     }
 

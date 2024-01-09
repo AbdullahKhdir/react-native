@@ -1,14 +1,37 @@
-import { useState } from "react";
-import { View, Text, ScrollView, TextInput, StyleSheet } from "react-native";
+import { useCallback, useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
+import Place from "./models/Place";
 
-export default PlaceForm = () => {
-    const [enteredTitle, setEnteredTitle] = useState();
+export default PlaceForm = ({onCreatePlace}) => {
+    const [enteredTitle, setEnteredTitle] = useState(null);
+    const [pickedLocation, setPickedLocation] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     
     function changeTitleHandler(enteredText) {
         setEnteredTitle(enteredText);
+    }
+
+    function takeImageHandler(imageUri) {
+        setSelectedImage(imageUri);
+    }
+    
+    //? using the hook useCallback to avoid unnecessary rerendering of the components or in this case recreating the following function
+    //? which leads to running the useEffect in LocationPicker.jsx
+    const pickLocationHandler = useCallback((location) => {
+        setPickedLocation(location);
+    }, []);
+
+    function savePlaceHandler() {
+        if (!enteredTitle || !selectedImage || !pickedLocation) {
+            Alert.alert('Validation error', 'Please fill in the title then pick an image and locate your address!');
+            return;
+        }
+        
+        const place_data = new Place(enteredTitle, selectedImage.uri, pickedLocation);
+        onCreatePlace(place_data);
     }
 
     return(
@@ -18,8 +41,12 @@ export default PlaceForm = () => {
                     <Text style={styles.label}>Title</Text>
                     <TextInput style={styles.input} onChangeText={changeTitleHandler} value={enteredTitle}/>
                 </View>
-                <ImagePicker style={styles.roundedCorners}/>
-                <LocationPicker style={styles.roundedCorners}/>
+                <ImagePicker style={styles.roundedCorners} onTakeImage={takeImageHandler} />
+                <LocationPicker style={styles.roundedCorners} onPickLocation={pickLocationHandler} />
+                <View style={styles.addPlaceButton}>
+                    {/* <Button onPress={savePlaceHandler}>Add Place</Button> */}
+                    <OutlinedButton onPress={savePlaceHandler}>Add Place</OutlinedButton>
+                </View>
             </ScrollView>
         </>
     );
@@ -46,5 +73,8 @@ const styles = StyleSheet.create({
     },
     roundedCorners: {
         borderRadius: 10
+    },
+    addPlaceButton: {
+        marginBottom: 50
     }
 });
