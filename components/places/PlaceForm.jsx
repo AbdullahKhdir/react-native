@@ -30,8 +30,7 @@ export default PlaceForm = ({onCreatePlace}) => {
             return;
         }
         
-        const place_data = new Place(enteredTitle, selectedImage.uri, pickedLocation);
-        onCreatePlace(place_data);
+        onCreatePlace(new Place(enteredTitle, selectedImage.uri, pickedLocation));
     }
 
     return(

@@ -1,9 +1,36 @@
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { useIsFocused } from "@react-navigation/native";
+// import { useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../constants/colors';
 import PlaceItem from './PlaceItem';
-import Place from './models/Place';
 
-export default PlacesList = ({ places }) => {
+export default PlacesList = ({places}) => {
+    // const [loaded_places, setLoadedPlaces] = useState();
+    // const is_focused                       = useIsFocused();
+
+    // useLayoutEffect(() => {
+    //     if (is_focused) {
+    //         // todo render loader
+    //         try {
+    //             AsyncStorage
+    //                 .getItem('place')
+    //                 .then((places) => {
+    //                     if (places !== null) {
+    //                         setLoadedPlaces(JSON.parse(places));
+    //                     }
+    //                     // try {
+    //                     //     AsyncStorage.removeItem('place');
+    //                     // } catch(e) {
+    //                     //     // remove error
+    //                     // }
+    //                 });
+    //         } catch (e) {
+    //             //! error reading value
+    //         }
+    //     }
+    // }, [is_focused]);
+
     if (!places || places.length === 0) {
         return (
             <View style={styles.container}>
@@ -17,16 +44,12 @@ export default PlacesList = ({ places }) => {
                 data={places} 
                 key={
                     (item) => {
-                        if(item instanceof Place) {
-                            return item.id
-                        }
+                        return item.id
                     }
                 }
                 renderItem={
                     ({item}) => {
-                        if(item instanceof Place) {
-                            return <PlaceItem place={item} />
-                        }
+                        return <PlaceItem place={item} />
                     }
                 }
             />

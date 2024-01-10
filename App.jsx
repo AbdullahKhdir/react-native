@@ -1,12 +1,14 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack/';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack/'
-import AllPlaces from './screens/AllPlaces';
-import AddPlace from './screens/AddPlace';
 import IconButton from './components/ui/IconButton';
 import { Colors } from './constants/colors';
+import AddPlace from './screens/AddPlace';
+import AllPlaces from './screens/AllPlaces';
 import Map from './screens/Map';
 
+// LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+// LogBox.ignoreAllLogs(); //Ignore all log notifications
 const Stack            = createNativeStackNavigator();
 const screenOptions    = {
   headerStyle: { backgroundColor: Colors.primary500 },
