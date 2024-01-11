@@ -6,11 +6,12 @@ import { Colors } from './constants/colors';
 import AddPlace from './screens/AddPlace';
 import AllPlaces from './screens/AllPlaces';
 import Map from './screens/Map';
+import PlaceDetails from './screens/PlaceDetails';
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 // LogBox.ignoreAllLogs(); //Ignore all log notifications
 const Stack            = createNativeStackNavigator();
-const screenOptions    = {
+const screen_options    = {
   headerStyle: { backgroundColor: Colors.primary500 },
   headerTintColor: Colors.gray700,
   contentStyle: { backgroundColor: Colors.gray700 },
@@ -19,7 +20,7 @@ const allPlacesOptions = ({ navigation }) => ({
   headerRight: ({tintColor}) => {
     return (
       <IconButton
-        iconName='add'
+        icon_name='add'
         size={24}
         color={tintColor}
         onPress={() => navigation.navigate('AddPlace')}
@@ -29,11 +30,15 @@ const allPlacesOptions = ({ navigation }) => ({
   title: 'Your favorite places'
 });
 
-const addPlacesOptions = {
+const add_places_options = {
   title: 'Add new place'
 };
 
-const mapOptions = {
+const place_details_options = {
+  title: 'Loading Place...'
+};
+
+const map_options = {
   title: '',
   headerTransparent: true,
   headerStyle: {
@@ -50,10 +55,11 @@ export default function App() {
     <>
       <StatusBar style='dark'/>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={screenOptions}>
-          <Stack.Screen name='AllPlaces'  component={AllPlaces} options={allPlacesOptions}/>
-          <Stack.Screen name='AddPlace'   component={AddPlace}  options={addPlacesOptions}/>
-          <Stack.Screen name='Map'        component={Map}       options={mapOptions}/>
+        <Stack.Navigator screenOptions={screen_options}>
+            <Stack.Screen name='AllPlaces'    component={AllPlaces}    options={allPlacesOptions}/>
+            <Stack.Screen name='AddPlace'     component={AddPlace}     options={add_places_options}/>
+            <Stack.Screen name='Map'          component={Map}          options={map_options}/>
+            <Stack.Screen name='PlaceDetails' component={PlaceDetails} options={place_details_options}/>
         </Stack.Navigator>
       </NavigationContainer>
     </>

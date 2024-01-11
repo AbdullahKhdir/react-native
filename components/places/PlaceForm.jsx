@@ -6,9 +6,9 @@ import LocationPicker from "./LocationPicker";
 import Place from "./models/Place";
 
 export default PlaceForm = ({onCreatePlace}) => {
-    const [enteredTitle, setEnteredTitle] = useState(null);
-    const [pickedLocation, setPickedLocation] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [entered_title, setEnteredTitle] = useState(null);
+    const [picked_location, setPickedLocation] = useState(null);
+    const [selected_image, setSelectedImage] = useState(null);
     
     function changeTitleHandler(enteredText) {
         setEnteredTitle(enteredText);
@@ -25,12 +25,12 @@ export default PlaceForm = ({onCreatePlace}) => {
     }, []);
 
     function savePlaceHandler() {
-        if (!enteredTitle || !selectedImage || !pickedLocation) {
-            Alert.alert('Validation error', 'Please fill in the title then pick an image and locate your address!');
+        if (!entered_title || !selected_image || !picked_location) {
+            Alert.alert('Validation Error', 'Please fill in the title then pick an image and locate your address!');
             return;
         }
         
-        onCreatePlace(new Place(enteredTitle, selectedImage.uri, pickedLocation));
+        onCreatePlace(new Place(entered_title, selected_image.uri, picked_location));
     }
 
     return(
@@ -38,13 +38,13 @@ export default PlaceForm = ({onCreatePlace}) => {
             <ScrollView style={styles.form}>
                 <View>
                     <Text style={styles.label}>Title</Text>
-                    <TextInput style={styles.input} onChangeText={changeTitleHandler} value={enteredTitle}/>
+                    <TextInput style={styles.input} onChangeText={changeTitleHandler} value={entered_title}/>
                 </View>
                 <ImagePicker style={styles.roundedCorners} onTakeImage={takeImageHandler} />
                 <LocationPicker style={styles.roundedCorners} onPickLocation={pickLocationHandler} />
                 <View style={styles.addPlaceButton}>
-                    {/* <Button onPress={savePlaceHandler}>Add Place</Button> */}
-                    <OutlinedButton onPress={savePlaceHandler}>Add Place</OutlinedButton>
+                    {/* <Button onPress={savePlaceHandler}>Add place</Button> */}
+                    <OutlinedButton onPress={savePlaceHandler}>Add place</OutlinedButton>
                 </View>
             </ScrollView>
         </>

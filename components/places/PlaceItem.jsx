@@ -6,7 +6,7 @@ export default PlaceItem = ({ place, onSelect }) => {
         <>
             <Pressable 
                 android_ripple={{color: '#ccc'}} 
-                onPress={onSelect}
+                onPress={onSelect.bind(this, place)}
                 style={({pressed}) => [styles.item, pressed && styles.pressed]}>
                     <Image style={styles.image} source={{ uri: place.image }}/>
                     <View style={styles.info}>

@@ -9,23 +9,23 @@ import { renderMapAfterTime } from "../../util/time";
 import OutlinedButton from "../ui/OutlinedButton";
 
 export default LocationPicker = ({onPickLocation}) => {
-    const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
-    const [getLocation, setLocation]                         = useState({});
-    const [loading, setLoading]                              = useState(false);
-    const mapRef                                             = useRef(null);
-    const navigation                                         = useNavigation();
-    const route                                              = useRoute();
+    const [location_permission_information, requestPermission] = useForegroundPermissions();
+    const [get_location, setLocation]                          = useState({});
+    const [loading, setLoading]                                = useState(false);
+    const map_ref                                              = useRef(null);
+    const navigation                                           = useNavigation();
+    const route                                                = useRoute();
 
-    const mapStyle = renderMapAfterTime();
+    const map_style = renderMapAfterTime();
     
     async function verifyPermissions() {
-        if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+        if (location_permission_information.status === PermissionStatus.UNDETERMINED) {
             const permissionResponse = await requestPermission();
 
             return permissionResponse.granted;
         }
 
-        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+        if (location_permission_information.status === PermissionStatus.DENIED) {
             Alert.alert(
                 'Insufficient Permissions!', 
                 'You need to grant location permissions to use this app.'
@@ -40,9 +40,9 @@ export default LocationPicker = ({onPickLocation}) => {
         setLoading(true);
         route.params = {};
 
-        const isLocationPermissionGranted = await verifyPermissions();
+        const is_location_permission_granted = await verifyPermissions();
       
-        if (!isLocationPermissionGranted) {
+        if (!is_location_permission_granted) {
             return;
         }
 
@@ -56,10 +56,10 @@ export default LocationPicker = ({onPickLocation}) => {
     }
 
     function handleCenter() {
-        mapRef.current.animateToRegion(
+        map_ref.current.animateToRegion(
           {
-            latitude: getLocation.latitude,
-            longitude: getLocation.longitude
+            latitude: get_location.latitude,
+            longitude: get_location.longitude
           }
         );
     }
@@ -69,18 +69,18 @@ export default LocationPicker = ({onPickLocation}) => {
       navigation.navigate(
         'Map',
         {
-          lat: getLocation.latitude,
-          lng: getLocation.longitude
+          lat: get_location.latitude,
+          lng: get_location.longitude
         }
       );
     }
 
     useEffect(function() {
-      if (mapRef.current !== null) {
-        mapRef.current.animateToRegion(
+      if (map_ref.current !== null) {
+        map_ref.current.animateToRegion(
           {
-            latitude: getLocation.latitude,
-            longitude: getLocation.longitude,
+            latitude: get_location.latitude,
+            longitude: get_location.longitude,
             latitudeDelta: 0.003,
             longitudeDelta: 0
           }
@@ -95,18 +95,18 @@ export default LocationPicker = ({onPickLocation}) => {
       }
 
       setLoading(false);
-    }, [mapRef, getLocation, navigation, route]);
+    }, [map_ref, get_location, navigation, route]);
 
 
     useEffect(() => {
       async function handleLocation() {
-        if (Object.keys(getLocation).length > 0) {
-          onPickLocation({...getLocation, address: await getAddressFromCoordinates(getLocation.latitude, getLocation.longitude)});
+        if (Object.keys(get_location).length > 0) {
+          onPickLocation({...get_location, address: await getAddressFromCoordinates(get_location.latitude, get_location.longitude)});
         }
       }
 
       handleLocation();
-    }, [getLocation, onPickLocation]);
+    }, [get_location, onPickLocation]);
 
     let map = (
       !loading ? 
@@ -117,22 +117,22 @@ export default LocationPicker = ({onPickLocation}) => {
         </View>
     );
 
-    if (typeof getLocation === 'object' && Object.keys(getLocation).length > 0) {
+    if (typeof get_location === 'object' && Object.keys(get_location).length > 0) {
         map = (
           <MapView
-            ref={mapRef}
+            ref={map_ref}
             style={styles.map}
             provider={PROVIDER_GOOGLE}
-            customMapStyle={mapStyle}
+            customMapStyle={map_style}
             initialRegion={{
-              latitude: getLocation.latitude,
-              longitude: getLocation.longitude,
+              latitude: get_location.latitude,
+              longitude: get_location.longitude,
               latitudeDelta: 0.003,
               longitudeDelta: 0,
             }}
             region={{
-              latitude: getLocation.latitude,
-              longitude: getLocation.longitude,
+              latitude: get_location.latitude,
+              longitude: get_location.longitude,
             }}
             showsUserLocation={true}
             userLocationPriority="high"

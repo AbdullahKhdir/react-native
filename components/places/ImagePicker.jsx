@@ -5,19 +5,19 @@ import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
 
 export default ImagePicker = ({onTakeImage}) => {
-    const [pickedImage, setPickedImage] = useState();
+    const [picked_image, setPickedImage] = useState();
     
     //? ios camera permission "requestPermission"
-    const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
+    const [camera_permission_information, requestPermission] = useCameraPermissions();
     
     async function verifyPermissions() {
-        if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+        if (camera_permission_information.status === PermissionStatus.UNDETERMINED) {
             const permissionResponse = await requestPermission();
 
             return permissionResponse.granted;
         }
 
-        if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
+        if (camera_permission_information.status === PermissionStatus.DENIED) {
             Alert.alert(
                 'Insufficient Permissions!', 
                 'You need to grant camera permissions to use this app.'
@@ -29,9 +29,9 @@ export default ImagePicker = ({onTakeImage}) => {
     }
 
     async function takeImageHandler() {
-        const isCameraPermissionGranted = await  verifyPermissions();
+        const is_camera_permission_granted = await  verifyPermissions();
         
-        if (!isCameraPermissionGranted) {
+        if (!is_camera_permission_granted) {
             return;
         }
 
@@ -47,12 +47,12 @@ export default ImagePicker = ({onTakeImage}) => {
         }).catch(() => {/** handle canceled image capturing */});
     }
 
-    let imagePreview = <Text>No image taken yet.</Text>
+    let image_preview = <Text>No image taken yet.</Text>
 
-    if (typeof pickedImage === 'object') {
-        if ('uri' in pickedImage) {
-            imagePreview = <Image 
-                source={{uri: pickedImage.uri}} 
+    if (typeof picked_image === 'object') {
+        if ('uri' in picked_image) {
+            image_preview = <Image 
+                source={{uri: picked_image.uri}} 
                 style={styles.image}    
             />; 
         }
@@ -62,7 +62,7 @@ export default ImagePicker = ({onTakeImage}) => {
         <>
             <View>
                 <View style={styles.imagePreview}>
-                    { imagePreview }
+                    { image_preview }
                 </View>
                 <OutlinedButton icon='camera' onPress={takeImageHandler}>Take an image</OutlinedButton>
             </View>
