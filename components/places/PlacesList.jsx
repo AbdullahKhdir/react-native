@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../constants/colors';
-import PlaceItem from './PlaceItem';
+// import PlaceItem from './PlaceItem';
+import SwipeablePlaceList from './SwipeablePlaceList';
 
-export default PlacesList = ({places}) => {
+export default PlacesList = ({places, onDelete}) => {
     const navigation = useNavigation();
 
     function selectPlaceHandler(place) {
@@ -33,8 +34,8 @@ export default PlacesList = ({places}) => {
                 }
                 renderItem={
                     ({item}) => {
-                        return <PlaceItem place={item} onSelect={selectPlaceHandler} />
-                        // return <PlaceSwipeableItem place={item} onSelect={selectPlaceHandler} />
+                        // return <PlaceItem place={item} onSelect={selectPlaceHandler} />
+                        return <SwipeablePlaceList place={item} onSelect={selectPlaceHandler} onDelete={onDelete} />
                     }
                 }
             />

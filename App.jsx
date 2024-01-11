@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack/';
 import { StatusBar } from 'expo-status-bar';
+import { LogBox } from 'react-native';
 import IconButton from './components/ui/IconButton';
 import { Colors } from './constants/colors';
 import AddPlace from './screens/AddPlace';
@@ -9,7 +10,7 @@ import Map from './screens/Map';
 import PlaceDetails from './screens/PlaceDetails';
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
-// LogBox.ignoreAllLogs(); //Ignore all log notifications
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 const Stack            = createNativeStackNavigator();
 const screen_options    = {
   headerStyle: { backgroundColor: Colors.primary500 },
@@ -53,15 +54,15 @@ const map_options = {
 export default function App() {
   return (
     <>
-      <StatusBar style='dark'/>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={screen_options}>
-            <Stack.Screen name='AllPlaces'    component={AllPlaces}    options={allPlacesOptions}/>
-            <Stack.Screen name='AddPlace'     component={AddPlace}     options={add_places_options}/>
-            <Stack.Screen name='Map'          component={Map}          options={map_options}/>
-            <Stack.Screen name='PlaceDetails' component={PlaceDetails} options={place_details_options}/>
-        </Stack.Navigator>
-      </NavigationContainer>
+        <StatusBar style='dark'/>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={screen_options}>
+              <Stack.Screen name='AllPlaces'    component={AllPlaces}    options={allPlacesOptions}/>
+              <Stack.Screen name='AddPlace'     component={AddPlace}     options={add_places_options}/>
+              <Stack.Screen name='Map'          component={Map}          options={map_options}/>
+              <Stack.Screen name='PlaceDetails' component={PlaceDetails} options={place_details_options}/>
+          </Stack.Navigator>
+        </NavigationContainer>
     </>
   );
 }
