@@ -21,7 +21,10 @@ export default SwipeablePlaceList = ({ place, onSelect, onDelete }) => {
     return(
         <>
             <GestureHandlerRootView style={{ flex: 1 }}>
-                <Swipeable renderRightActions={renderRightActionHanlder}>
+                <Swipeable 
+                    renderRightActions={renderRightActionHanlder} 
+                    friction={7} 
+                    leftThreshold={0}>
                     <Pressable 
                         android_ripple={{color: '#ccc'}} 
                         onPress={onSelect.bind(this, place)}
