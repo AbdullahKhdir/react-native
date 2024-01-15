@@ -1,20 +1,23 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import IconButton from "../components/ui/IconButton";
 import { Colors } from "../constants/colors";
+import { getAddressFromCoordinates } from "../util/location";
 import { renderMapAfterTime } from "../util/time";
 
 export default function Map({ navigation, route }) {
     const latitude        = route?.params?.latitude  || 49.447446;
     const longitude       = route?.params?.longitude || 11.077384;
     const read_only_map   = route?.params?.read_only || false;
+    const title           = route?.params?.title     || 'My Location';
 
     const latitude_delta  = 0.0922;
     const longitude_delta = 0.0421;
     
     const map_style                         = renderMapAfterTime();
     const [get_coordinates, setCoordinates] = useState(null);
+    const [get_address, setAddress]         = useState('');
     const map_ref                           = useRef(null);
     
     function selectLocationHandler(event) {
@@ -68,6 +71,17 @@ export default function Map({ navigation, route }) {
             });
         }
     }, [navigation, get_coordinates, route]);
+
+    useEffect(() => {
+        async function fetchAddress() {
+            if (get_coordinates || latitude || longitude) {
+                let address = await getAddressFromCoordinates(get_coordinates ? get_coordinates.latitude : latitude, get_coordinates ? get_coordinates.longitude : longitude);
+                setAddress(address);
+            }
+        }
+
+        fetchAddress();
+    });
     
     return(
         <MapView 
@@ -108,7 +122,8 @@ export default function Map({ navigation, route }) {
                                 longitude: route?.params?.longitude
                             }
                         }
-                        title="My Location" 
+                        title={title}
+                        description={get_address}
                     /> 
                     :
                     null

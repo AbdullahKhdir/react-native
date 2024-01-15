@@ -11,6 +11,7 @@ import OutlinedButton from "../ui/OutlinedButton";
 export default LocationPicker = ({onPickLocation}) => {
     const [location_permission_information, requestPermission] = useForegroundPermissions();
     const [get_location, setLocation]                          = useState({});
+    const [get_address, setAddress]                            = useState('');
     const [loading, setLoading]                                = useState(false);
     const map_ref                                              = useRef(null);
     const navigation                                           = useNavigation();
@@ -69,8 +70,8 @@ export default LocationPicker = ({onPickLocation}) => {
       navigation.navigate(
         'Map',
         {
-          lat: get_location.latitude,
-          lng: get_location.longitude
+          latitude: get_location.latitude,
+          longitude: get_location.longitude
         }
       );
     }
@@ -101,7 +102,9 @@ export default LocationPicker = ({onPickLocation}) => {
     useEffect(() => {
       async function handleLocation() {
         if (Object.keys(get_location).length > 0) {
-          onPickLocation({...get_location, address: await getAddressFromCoordinates(get_location.latitude, get_location.longitude)});
+          let address = await getAddressFromCoordinates(get_location.latitude, get_location.longitude);
+          setAddress(address);
+          onPickLocation({...get_location, address: address});
         }
       }
 
@@ -134,13 +137,13 @@ export default LocationPicker = ({onPickLocation}) => {
               latitude: get_location.latitude,
               longitude: get_location.longitude,
             }}
-            showsUserLocation={true}
+            // showsUserLocation={true}
             userLocationPriority="high"
             userLocationUpdateInterval={1000 * 60}
             followsUserLocation={true}
             userLocationCalloutEnabled={true}
             // showsMyLocationButton={true}
-            showsPointsOfInterest={false}
+            showsPointsOfInterest={true}
             showsCompass={false}
             minZoomLevel={1}
             maxZoomLevel={17}
@@ -161,7 +164,21 @@ export default LocationPicker = ({onPickLocation}) => {
                   }
                 } 
                 title="Picked Location"
-                // description="Location"
+                description={get_address}
+              />
+            }
+            {
+              (!isNaN(get_location?.latitude) && !isNaN(get_location?.longitude))
+              &&
+              <Marker 
+                coordinate={
+                  {
+                    latitude: get_location?.latitude,
+                    longitude: get_location?.longitude
+                  }
+                } 
+                title="My Location"
+                description={get_address}
               />
             }
           </MapView>

@@ -11,7 +11,8 @@ export default PlaceDetails = ({route, navigation}) => {
                 {
                     latitude: place_param.location.latitude,
                     longitude: place_param.location.longitude,
-                    read_only: true
+                    read_only: true,
+                    title: place_param.title,
                 }
             );
         }
